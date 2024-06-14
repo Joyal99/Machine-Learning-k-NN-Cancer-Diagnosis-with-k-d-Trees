@@ -1,3 +1,8 @@
+//COEN 352
+//Assignment 3
+//Joyal Biju Kulangara (40237314)
+//Kevin Mandiouba (40243497)
+
 import ass3.Patient;
 import ass3.Reader;
 import ass3.KdTree;
