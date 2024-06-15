@@ -46,47 +46,7 @@ public class Patient {
         return diagnosis;
     }
 
-    public double getRadius_mean() {
-        return radius_mean;
-    }
-
-    public double getTexture_mean() {
-        return texture_mean;
-    }
-
-    public double getPerimeter_mean() {
-        return perimeter_mean;
-    }
-
-    public double getArea_mean() {
-        return area_mean;
-    }
-
-    public double getSmoothness_mean() {
-        return smoothness_mean;
-    }
-
-    public double getCompactness_mean() {
-        return compactness_mean;
-    }
-
-    public double getConcavity_mean() {
-        return concavity_mean;
-    }
-
-    public double getConcave_points_mean() {
-        return concave_points_mean;
-    }
-
-    public double getSymmetry_mean() {
-        return symmetry_mean;
-    }
-
-    public double getFractal_dimension_mean() {
-        return fractal_dimension_mean;
-    }
-
-    public double[] getAttributes(){
+        public double[] getAttributes(){
         return new double[]{
                 radius_mean, texture_mean, perimeter_mean, area_mean, smoothness_mean,
                 compactness_mean, concavity_mean, concave_points_mean, symmetry_mean, fractal_dimension_mean};
