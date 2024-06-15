@@ -8,3 +8,6 @@ This project aims to use machine learning by taking a set of 569 instances of da
 
 
 ![ai-technology-brain-background-digital-transformation-concept_53876-125206](https://github.com/Joyal99/Machine-Learning-k-NN-Cancer-Diagnosis-with-k-d-Trees/assets/122915447/b963d334-d620-41f1-8fe4-9e5d4b72bf31)
+
+
+A project completed with [@KevinMandiouba] (https://github.com/KevinMandiouba)
