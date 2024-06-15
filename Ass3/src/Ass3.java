@@ -1,15 +1,17 @@
 import ass3.Patient;
 import ass3.Reader;
 import ass3.KdTree;
+import ass3.BallTree;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class Ass3 {
 
     public static void main(String[] args) {
 
-        System.out.println("**********************************************************");
-        System.out.println("\tAssignment 3: Breast Cancer Diagnosis Research");
-        System.out.println("**********************************************************");
+        System.out.println("*************************************************************************************");
+        System.out.println("\t\t\t\tAssignment 3: Breast Cancer Diagnosis Research");
+        System.out.println("*************************************************************************************");
 
         // Creating a HashMap of patients (Keeps the order from the Excel file)
         Reader reader = new Reader();
@@ -20,79 +22,129 @@ public class Ass3 {
         Collections.shuffle(IDs);
 
         // Creating Training and Testing records
-        Map<Integer, double[]> trainingRecords = new LinkedHashMap<>();
-        Map<Integer, double[]> testingRecords = new LinkedHashMap<>();
+        int[] training_count = {100, 200, 300, 400, 500, 568, 569};
 
-        // Making sure we have enough elements for training and testing
-        int [] training_count = {100, 200, 300, 400, 500, 568, 569};
+        int choice = 1;
 
-        for(int size_N: training_count) {
+        while (choice < 3) {
 
-            int test_count= size_N / 4;
-
-            if (IDs.size() < size_N + test_count && size_N < IDs.size()){
-                test_count = IDs.size() - size_N;
-            }
-            else if (size_N >= 569) {
-                System.out.println("Not enough data for a training sample of N = " + size_N + " to split into training and testing sets.\n");
-                continue;
-            }
-
-            System.out.println("For a training sample of N = " + size_N + " here are the results:");
-
-            // Splitting the data into training and testing sets
-            for (int i = 0; i < size_N; i++) {
-                Integer key = IDs.get(i);
-                Patient record = dataMap.get(key);
-                trainingRecords.put(key, record.getAttributes());
+            switch (choice) {
+                case 1: // KdTree Output
+                    System.out.println("-------------------------------------------------------------------------------------");
+                    System.out.println("\t\t\t\t\t\t\tKdTree Algorithm");
+                    System.out.println("-------------------------------------------------------------------------------------");
+                    break;
+                case 2: // BallTree Output
+                    System.out.println("-------------------------------------------------------------------------------------");
+                    System.out.println("\t\t\t\t\t\t\tBallTree Algorithm");
+                    System.out.println("-------------------------------------------------------------------------------------");
+                    break;
             }
 
-            for (int i = size_N; i < size_N + test_count; i++) {
-                Integer key = IDs.get(i);
-                Patient record = dataMap.get(key);
-                testingRecords.put(key, record.getAttributes());
-            }
+            for (int size_N : training_count) {
 
-            //Building the k-d tree with training records
-            KdTree kdTree = new KdTree(10, trainingRecords);
+                int test_count = size_N / 4;
 
-            //K-NN analysis on testing records
-            int[] kValues = {1, 5, 7};
-            for (int k : kValues) {
-                int correctPredictions = 0;
-                long runtime = 0;
-
-                for (Map.Entry<Integer, double[]> entry : testingRecords.entrySet()) {
-                    double[] attributes = entry.getValue();
-
-                    KdTree.Node targetNode = new KdTree.Node(attributes);
-                    List<KdTree.Node> neighbors = kdTree.kNearestNeighbors(targetNode, k);
-
-                    Patient testPatient = dataMap.get(entry.getKey());
-
-                    Stopwatch timer = new Stopwatch();
-
-                    char predictedDiagnosis = majorityVote(neighbors, dataMap);
-
-                    if (predictedDiagnosis == testPatient.getDiagnosis()) {
-                        correctPredictions++;
-                    }
-
-                    runtime += timer.elapsedTimeInMicroseconds();
+                if (IDs.size() < size_N + test_count && size_N < IDs.size()) {
+                    test_count = IDs.size() - size_N;
+                }
+                else if (size_N >= 569) {
+                    System.out.println("\nNot enough data for a training sample of N = " + size_N + " to split into training and testing sets.\n");
+                    continue;
                 }
 
-                double accuracy = (double)correctPredictions / testingRecords.size();
-                double accuracy_percentage = accuracy * 100;
+                System.out.println("\nFor a training sample of N = " + size_N + " and a testing sample of T = " + test_count + " here are the results:");
 
-                System.out.println("- Accuracy for k = " + k + " is " + accuracy_percentage + "% and Running Time is " + runtime + " microseconds");
+                // Splitting the data into training and testing sets
+                Map<Integer, double[]> trainingRecords = new LinkedHashMap<>();
+                Map<Integer, double[]> testingRecords = new LinkedHashMap<>();
+
+                for (int i = 0; i < size_N; i++) {
+                    Integer key = IDs.get(i);
+                    Patient record = dataMap.get(key);
+                    trainingRecords.put(key, record.getAttributes());
+                }
+
+                for (int i = size_N; i < size_N + test_count; i++) {
+                    Integer key = IDs.get(i);
+                    Patient record = dataMap.get(key);
+                    testingRecords.put(key, record.getAttributes());
+                }
+
+                // Building the k-d tree with training records
+                KdTree kdTree = new KdTree(10, trainingRecords);
+
+                // Building the ball tree with training records
+                List<double[]> trainingPoints = new ArrayList<>(trainingRecords.values());
+                BallTree.Node rootBallTree = BallTree.constructBallTree(trainingPoints);
+
+                // K-NN analysis on testing records
+                int[] kValues = {1, 5, 7};
+
+                switch (choice) {
+                    case 1: // KdTree
+                        for (int k : kValues) {
+                            int correctPredictionsKdTree = 0;
+                            long runtimeKdTree = 0;
+
+                            for (Map.Entry<Integer, double[]> entry : testingRecords.entrySet()) {
+                                double[] attributes = entry.getValue();
+
+                                KdTree.Node targetNodeKd = new KdTree.Node(attributes);
+                                List<KdTree.Node> neighborsKdTree = kdTree.kNearestNeighbors(targetNodeKd, k);
+
+                                Stopwatch timerKdTree = new Stopwatch();
+                                char predictedDiagnosisKdTree = majorityVote(neighborsKdTree, dataMap);
+                                runtimeKdTree += timerKdTree.elapsedTimeInMicroseconds();
+
+                                Patient testPatient = dataMap.get(entry.getKey());
+
+                                if (predictedDiagnosisKdTree == testPatient.getDiagnosis()) {
+                                    correctPredictionsKdTree++;
+                                }
+                            }
+
+                            double accuracyKdTree = (double) correctPredictionsKdTree / testingRecords.size();
+                            DecimalFormat df = new DecimalFormat("#.#");
+                            double accuracyPercentageKdTree = Double.valueOf(df.format(accuracyKdTree * 100));
+
+                            System.out.println("- Accuracy for k = " + k + " is " + accuracyPercentageKdTree + "% and Running Time is " + runtimeKdTree + " microseconds");
+                        }
+                        break;
+
+                    case 2: // BallTree
+                        for (int k : kValues) {
+                            int correctPredictionsBallTree = 0;
+                            long runtimeBallTree = 0;
+
+                            for (Map.Entry<Integer, double[]> entry : testingRecords.entrySet()) {
+                                double[] attributes = entry.getValue();
+
+                                Stopwatch timerBallTree = new Stopwatch();
+                                List<double[]> neighborsBallTree = BallTree.kNearestNeighbors(rootBallTree, attributes, k);
+                                char predictedDiagnosisBallTree = majorityVoteBallTree(neighborsBallTree, dataMap);
+                                runtimeBallTree += timerBallTree.elapsedTimeInMicroseconds();
+
+                                Patient testPatient = dataMap.get(entry.getKey());
+
+                                if (predictedDiagnosisBallTree == testPatient.getDiagnosis()) {
+                                    correctPredictionsBallTree++;
+                                }
+                            }
+
+                            double accuracyBallTree = (double) correctPredictionsBallTree / testingRecords.size();
+                            DecimalFormat df = new DecimalFormat("#.#");
+                            double accuracyPercentageBallTree = Double.valueOf(df.format(accuracyBallTree * 100));
+
+                            System.out.println("- Accuracy for k = " + k + " is " + accuracyPercentageBallTree + "% and Running Time is " + runtimeBallTree + " microseconds");
+                        }
+                        break;
+                }
             }
-            System.out.println();
+            choice++;
         }
-
-//        // Storing the training and testing sets IDs
-//        List<Integer> trainingRecords_IDs = new ArrayList<>(trainingRecords.keySet());
-//        List<Integer> testingRecords_IDs = new ArrayList<>(testingRecords.keySet());
     }
+
     public static class Stopwatch {
         private final long start;
 
@@ -105,6 +157,7 @@ public class Ass3 {
             return (now - start) / 1000;
         }
     }
+
     private static char majorityVote(List<KdTree.Node> neighbors, Map<Integer, Patient> dataMap) {
         Map<Character, Integer> voteCount = new HashMap<>();
         for (KdTree.Node neighbor : neighbors) {
@@ -119,5 +172,17 @@ public class Ass3 {
         return Collections.max(voteCount.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
+    private static char majorityVoteBallTree(List<double[]> neighbors, Map<Integer, Patient> dataMap) {
+        Map<Character, Integer> voteCount = new HashMap<>();
+        for (double[] neighbor : neighbors) {
+            for (Map.Entry<Integer, Patient> entry : dataMap.entrySet()) {
+                if (Arrays.equals(neighbor, entry.getValue().getAttributes())) {
+                    char diagnosis = entry.getValue().getDiagnosis();
+                    voteCount.put(diagnosis, voteCount.getOrDefault(diagnosis, 0) + 1);
+                    break;
+                }
+            }
+        }
+        return Collections.max(voteCount.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
 }
-//
