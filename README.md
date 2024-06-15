@@ -2,7 +2,7 @@
 
 ## Overview 
 This project implements a machine learning solution for cancer diagnosis as either malignant or benign using the k-nearest neighbors (k-NN) algorithm. using the k-nearest neighbors (k-NN) algorithm and k-d trees. 
-It analyzes the [Breast Cancer Wisconsin dataset](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download), which has 569 instances of data, each with various attributes relevant to the diagnosis. The focus of this project is to optimize both the accuracy and efficiency of the k-NN algorithm using two tree data structures: KD-Tree and Ball Tree. The dataset is found in the "data.csv"
+It analyzes the [Breast Cancer Wisconsin dataset](https://www.kaggle.com/datasets/uciml/breast-cancer-wisconsin-data?resource=download), which has 569 instances of data, each with various attributes relevant to the diagnosis. The focus of this project is to optimize both the accuracy and efficiency of the k-NN algorithm using two tree data structures: KD-Tree and Ball Tree. The dataset can also be found in the `data.csv` file attached to the program files.
 
 ## Identifing the problem
 Given a dataset with 569 instances, each representing a patient's cell information (either cancerous or non-cancerous), the objective is to design, implement, and evaluate a machine learning model that classifies the diagnosis accurately and efficiently. The k-NN algorithm, known for its simplicity and effectiveness, is used in conjunction with KD-Tree and Ball Tree Data structures to enhance Performance.
