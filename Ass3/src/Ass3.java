@@ -24,7 +24,7 @@ public class Ass3 {
         Map<Integer, double[]> testingRecords = new LinkedHashMap<>();
 
         // Making sure we have enough elements for training and testing
-        int [] training_count = {100, 200, 300, 400, 500, 569};
+        int [] training_count = {100, 200, 300, 400, 500, 568, 569};
 
         for(int size_N: training_count) {
 
@@ -68,10 +68,11 @@ public class Ass3 {
                     KdTree.Node targetNode = new KdTree.Node(attributes);
                     List<KdTree.Node> neighbors = kdTree.kNearestNeighbors(targetNode, k);
 
+                    Patient testPatient = dataMap.get(entry.getKey());
+
                     Stopwatch timer = new Stopwatch();
 
                     char predictedDiagnosis = majorityVote(neighbors, dataMap);
-                    Patient testPatient = dataMap.get(entry.getKey());
 
                     if (predictedDiagnosis == testPatient.getDiagnosis()) {
                         correctPredictions++;
