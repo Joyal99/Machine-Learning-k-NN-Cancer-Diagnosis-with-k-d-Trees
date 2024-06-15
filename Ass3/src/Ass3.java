@@ -1,8 +1,3 @@
-//COEN 352
-//Assignment 3
-//Joyal Biju Kulangara (40237314)
-//Kevin Mandiouba (40243497)
-
 import ass3.Patient;
 import ass3.Reader;
 import ass3.KdTree;
@@ -29,17 +24,21 @@ public class Ass3 {
         Map<Integer, double[]> testingRecords = new LinkedHashMap<>();
 
         // Making sure we have enough elements for training and testing
-        int [] training_count = {100, 200, 300, 400, 500};
+        int [] training_count = {100, 200, 300, 400, 500, 569};
 
         for(int size_N: training_count) {
-            int test_count = size_N / 4;
+
+            int test_count= size_N / 4;
+
+            if (IDs.size() < size_N + test_count && size_N < IDs.size()){
+                test_count = IDs.size() - size_N;
+            }
+            else if (size_N >= 569) {
+                System.out.println("Not enough data for a training sample of N = " + size_N + " to split into training and testing sets.\n");
+                continue;
+            }
 
             System.out.println("For a training sample of N = " + size_N + " here are the results:");
-
-            if (IDs.size() < size_N + test_count) {
-                System.out.println("Not enough data to split into training and testing sets.");
-                return;
-            }
 
             // Splitting the data into training and testing sets
             for (int i = 0; i < size_N; i++) {
@@ -120,4 +119,4 @@ public class Ass3 {
     }
 
 }
-//
+////
