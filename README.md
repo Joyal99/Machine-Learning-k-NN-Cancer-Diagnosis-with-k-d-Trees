@@ -76,7 +76,14 @@ The model's performance is evaluated based on:
 ## Conclusion
 This project demonstrates the application of KD-Tree and Ball Tree structures to improve the efficiency of the k-NN algorithm in classifying breast cancer diagnoses. The results provide insights into the trade-offs between accuracy and computational efficiency, guiding the choice of data structure for similar machine learning tasks.
 
-A project completed with [@KevinMandiouba] (https://github.com/KevinMandiouba)
+
+## Contributors
+- [Joyal99](https://github.com/Joyal99)
+- [KevinMandiouba](https://github.com/KevinMandiouba) 
+
+## Acknowledgments
+Special thanks to @KevinMandiouba with whom this project was successfull.
+
 ---
 
 
