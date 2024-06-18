@@ -1,10 +1,10 @@
-package ass3;
 import java.util.*;
 
 public class KdTree {
     private int dimensions_;
     private Node root_ = null;
 
+    // Constructor to create a KdTree with the given dimensions and training records
     public KdTree(int dimensions, Map<Integer, double[]> trainingRecords) {
         dimensions_ = dimensions;
         List<Node> nodes = new ArrayList<>();
@@ -14,6 +14,7 @@ public class KdTree {
         root_ = makeTree(nodes, 0, nodes.size(), 0);
     }
 
+    // Method to find the k nearest neighbors of a target node
     public List<Node> kNearestNeighbors(Node target, int k) {
         PriorityQueue<NodeDistance> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> -a.distance));
         nearest(root_, target, k, 0, pq);
@@ -25,6 +26,7 @@ public class KdTree {
         return result;
     }
 
+    // Helper method for kNearestNeighbors
     private void nearest(Node root, Node target, int k, int depth, PriorityQueue<NodeDistance> pq) {
         if (root == null)
             return;
@@ -45,6 +47,7 @@ public class KdTree {
         }
     }
 
+    // Method to recursively construct the KdTree
     private Node makeTree(List<Node> nodes, int begin, int end, int depth) {
         if (end <= begin)
             return null;
@@ -58,6 +61,7 @@ public class KdTree {
         return node;
     }
 
+    // Comparator for nodes based on a specific dimension for the KdTree defined
     private static class NodeComparator implements Comparator<Node> {
         private int index_;
 
@@ -70,6 +74,7 @@ public class KdTree {
         }
     }
 
+    // Inner class representing a node in the KdTree
     public static class Node {
         public double[] coords_;
         private Node left_ = null;
@@ -100,6 +105,7 @@ public class KdTree {
         }
     }
 
+    // Inner class representing a node and its distance from the target
     private static class NodeDistance {
         Node node;
         double distance;
@@ -111,15 +117,18 @@ public class KdTree {
     }
 }
 
+// Class for quick selection algorithm used in KdTree
 class QuickSelect {
     private static final Random random = new Random();
 
+    // Method to select the nth element in a list using a comparator
     public static <T> T select(List<T> list, int n, Comparator<? super T> cmp) {
         return select(list, 0, list.size() - 1, n, cmp);
     }
 
+    // Helper method for select
     public static <T> T select(List<T> list, int left, int right, int n, Comparator<? super T> cmp) {
-        for (;;) {
+        for (; ; ) {
             if (left == right)
                 return list.get(left);
             int pivot = pivotIndex(left, right);
@@ -133,6 +142,7 @@ class QuickSelect {
         }
     }
 
+    // Method to partition the list around a pivot
     private static <T> int partition(List<T> list, int left, int right, int pivot, Comparator<? super T> cmp) {
         T pivotValue = list.get(pivot);
         swap(list, pivot, right);
@@ -147,12 +157,14 @@ class QuickSelect {
         return store;
     }
 
+    // Method to partition the list around a pivot
     private static <T> void swap(List<T> list, int i, int j) {
         T value = list.get(i);
         list.set(i, list.get(j));
         list.set(j, value);
     }
 
+    // Method to partition the list around a pivot
     private static int pivotIndex(int left, int right) {
         return left + random.nextInt(right - left + 1);
     }

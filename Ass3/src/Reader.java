@@ -1,22 +1,21 @@
-package ass3;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Reader {
 
-    public HashMap<Integer, Patient> readFile() {
+    // Method to read the data file and return a map of patient records
+    public Map<Integer, Patient> readFile() {
 
-        HashMap<Integer, Patient> dataMap = new HashMap<>();
+        Map<Integer, Patient> dataMap = new LinkedHashMap<>();
 
-        String File = "./src/data.csv";
+        String File = "./data.csv"; // Path to the csv file, can be modified based on directory that the csv file is found.
         String line;
 
-        try (BufferedReader br = new BufferedReader(new FileReader(File))) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(File));
             //Skipping the header line of the file
             br.readLine();
 
@@ -25,6 +24,7 @@ public class Reader {
             // Use comma as separator
             String[] values = line.split(",");
 
+            // Parsing the data values
             int id = Integer.parseInt(values[0]);
             char diagnosis = values[1].charAt(0);
             double radius_mean = Double.parseDouble(values[2]);
@@ -38,6 +38,7 @@ public class Reader {
             double symmetry_mean = Double.parseDouble(values[10]);
             double fractal_dimension_mean = Double.parseDouble(values[11]);
 
+            // Creating a Patient object and adding it to the map
             Patient patient = new Patient(id, diagnosis, radius_mean, texture_mean,
                     perimeter_mean, area_mean, smoothness_mean, compactness_mean,
                     concavity_mean, concave_points_mean, symmetry_mean, fractal_dimension_mean);
@@ -46,8 +47,8 @@ public class Reader {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print the stack trace in case of an error
         }
-        return dataMap;
+        return dataMap; // Return the map of patient records
     }
 }

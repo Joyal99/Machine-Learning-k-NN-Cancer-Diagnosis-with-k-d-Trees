@@ -1,8 +1,6 @@
-package ass3;
-
 public class Patient {
 
-    //Attributes
+    // Attributes for the Patient Class
     private int id;
     private char diagnosis;
 
@@ -17,6 +15,7 @@ public class Patient {
     private double symmetry_mean = 0;
     private double fractal_dimension_mean = 0;
 
+    // Constructor to initialize the attributes
     public Patient(int id, char diagnosis,
                    double radius_mean, double texture_mean,
                    double perimeter_mean, double area_mean,
@@ -38,15 +37,18 @@ public class Patient {
         this.fractal_dimension_mean = fractal_dimension_mean;
     }
 
+    // Getter method for ID
     public int getId() {
         return id;
     }
 
+    // Getter method for diagnosis
     public char getDiagnosis() {
         return diagnosis;
     }
 
-        public double[] getAttributes(){
+    // Method to get all attributes as an array
+    public double[] getAttributes(){
         return new double[]{
                 radius_mean, texture_mean, perimeter_mean, area_mean, smoothness_mean,
                 compactness_mean, concavity_mean, concave_points_mean, symmetry_mean, fractal_dimension_mean};

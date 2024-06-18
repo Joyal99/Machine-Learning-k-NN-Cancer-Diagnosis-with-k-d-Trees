@@ -1,7 +1,8 @@
-import ass3.Patient;
-import ass3.Reader;
-import ass3.KdTree;
-import ass3.BallTree;
+//COEN 352
+//Assignment 3
+//Joyal Biju Kulangara (40237314)
+//Kevin Mandiouba (40243497)
+
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -13,20 +14,21 @@ public class Ass3 {
         System.out.println("\t\t\t\tAssignment 3: Breast Cancer Diagnosis Research");
         System.out.println("*************************************************************************************");
 
-        // Creating a HashMap of patients (Keeps the order from the Excel file)
-        Reader reader = new Reader();
+
+        Reader reader = new Reader();  // Creating a Reader object to read the data file
         Map<Integer, Patient> dataMap = reader.readFile();
 
         // Storing the IDs and shuffling them
         List<Integer> IDs = new ArrayList<>(dataMap.keySet());
         Collections.shuffle(IDs);
 
-        // Creating Training and Testing records
-        int[] training_count = {100, 200, 300, 400, 500, 568, 569};
+        // Creating Array of training records
+        int[] training_count = {100, 200, 300, 400, 500, 568, 600};
 
         int choice = 1;
 
-        while (choice < 3) {
+        // Loop to alternate between KdTree and BallTree algorithms
+        while (choice <= 2) {
 
             switch (choice) {
                 case 1: // KdTree Output
@@ -35,12 +37,14 @@ public class Ass3 {
                     System.out.println("-------------------------------------------------------------------------------------");
                     break;
                 case 2: // BallTree Output
+                    System.out.println();
                     System.out.println("-------------------------------------------------------------------------------------");
                     System.out.println("\t\t\t\t\t\t\tBallTree Algorithm");
                     System.out.println("-------------------------------------------------------------------------------------");
                     break;
             }
 
+            // Loop through different training records
             for (int size_N : training_count) {
 
                 int test_count = size_N / 4;
@@ -49,7 +53,7 @@ public class Ass3 {
                     test_count = IDs.size() - size_N;
                 }
                 else if (size_N >= 569) {
-                    System.out.println("\nNot enough data for a training sample of N = " + size_N + " to split into training and testing sets.\n");
+                    System.out.println("\nNot enough data for a training sample of N = " + size_N + " to split into training and testing sets.");
                     continue;
                 }
 
@@ -106,7 +110,7 @@ public class Ass3 {
 
                             double accuracyKdTree = (double) correctPredictionsKdTree / testingRecords.size();
                             DecimalFormat df = new DecimalFormat("#.#");
-                            double accuracyPercentageKdTree = Double.valueOf(df.format(accuracyKdTree * 100));
+                            double accuracyPercentageKdTree = Double.parseDouble(df.format(accuracyKdTree * 100));
 
                             System.out.println("- Accuracy for k = " + k + " is " + accuracyPercentageKdTree + "% and Running Time is " + runtimeKdTree + " microseconds");
                         }
@@ -134,7 +138,7 @@ public class Ass3 {
 
                             double accuracyBallTree = (double) correctPredictionsBallTree / testingRecords.size();
                             DecimalFormat df = new DecimalFormat("#.#");
-                            double accuracyPercentageBallTree = Double.valueOf(df.format(accuracyBallTree * 100));
+                            double accuracyPercentageBallTree = Double.parseDouble(df.format(accuracyBallTree * 100));
 
                             System.out.println("- Accuracy for k = " + k + " is " + accuracyPercentageBallTree + "% and Running Time is " + runtimeBallTree + " microseconds");
                         }
@@ -145,6 +149,7 @@ public class Ass3 {
         }
     }
 
+    // Class to measure running time
     public static class Stopwatch {
         private final long start;
 
@@ -158,6 +163,7 @@ public class Ass3 {
         }
     }
 
+    // Method to find the majority vote diagnosis for KdTree
     private static char majorityVote(List<KdTree.Node> neighbors, Map<Integer, Patient> dataMap) {
         Map<Character, Integer> voteCount = new HashMap<>();
         for (KdTree.Node neighbor : neighbors) {
@@ -172,6 +178,7 @@ public class Ass3 {
         return Collections.max(voteCount.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 
+    // Method to find the majority vote diagnosis for BallTree
     private static char majorityVoteBallTree(List<double[]> neighbors, Map<Integer, Patient> dataMap) {
         Map<Character, Integer> voteCount = new HashMap<>();
         for (double[] neighbor : neighbors) {
@@ -186,4 +193,4 @@ public class Ass3 {
         return Collections.max(voteCount.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 }
-//
+
