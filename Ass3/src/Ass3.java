@@ -23,7 +23,7 @@ public class Ass3 {
         Collections.shuffle(IDs);
 
         // Creating an array containing the training records sample size
-        int[] training_count = {100, 200, 300, 400, 500, 568, 600};
+        int[] training_count = {100, 200, 300, 400, 500, 568, 600}; // 568 and 600 were added for testing purposes
 
         int choice = 1;
 
