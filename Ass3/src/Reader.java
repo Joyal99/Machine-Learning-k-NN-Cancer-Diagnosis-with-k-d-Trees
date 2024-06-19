@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class Reader {
 
-    // Method to read the data file and return a map of patient records
+    // Method to read the CSV file and return a LinkedHashMap of patient records
     public Map<Integer, Patient> readFile() {
 
         Map<Integer, Patient> dataMap = new LinkedHashMap<>();
 
-        String File = "./data.csv"; // Path to the csv file, can be modified based on directory that the csv file is found.
+        String File = "./data.csv";
         String line;
 
         try {
@@ -47,9 +47,8 @@ public class Reader {
             }
 
         } catch (IOException e) {
-            e.printStackTrace(); // Print the stack trace in case of an error
+            e.printStackTrace();
         }
-        return dataMap; // Return the map of patient records
+        return dataMap;
     }
 }
-//

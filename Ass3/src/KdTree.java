@@ -1,10 +1,17 @@
+// References
+//Rosetta Code, "K-d Tree," [Online]. Available: https://rosettacode.org/wiki/K-d_tree. [Accessed 10 June 2024].
+/*
+GeeksforGeeks, "K-Nearest Neighbor(KNN) Algorithm," 25 January 2024. [Online].
+Available: https://www.geeksforgeeks.org/k-nearest-neighbours/. [Accessed 10 June 2024].
+ */
+
 import java.util.*;
 
 public class KdTree {
     private int dimensions_;
     private Node root_ = null;
 
-    // Constructor to create a KdTree with the given dimensions and training records
+    // Constructor to create a KdTree
     public KdTree(int dimensions, Map<Integer, double[]> trainingRecords) {
         dimensions_ = dimensions;
         List<Node> nodes = new ArrayList<>();
@@ -26,7 +33,7 @@ public class KdTree {
         return result;
     }
 
-    // Helper method for kNearestNeighbors
+    // Method for kNearestNeighbors
     private void nearest(Node root, Node target, int k, int depth, PriorityQueue<NodeDistance> pq) {
         if (root == null)
             return;
@@ -61,7 +68,7 @@ public class KdTree {
         return node;
     }
 
-    // Comparator for nodes based on a specific dimension for the KdTree defined
+    // Comparator for nodes based on the dimension of the KdTree
     private static class NodeComparator implements Comparator<Node> {
         private int index_;
 
@@ -74,7 +81,7 @@ public class KdTree {
         }
     }
 
-    // Inner class representing a node in the KdTree
+    // Class representing a node in the KdTree
     public static class Node {
         public double[] coords_;
         private Node left_ = null;
@@ -105,7 +112,7 @@ public class KdTree {
         }
     }
 
-    // Inner class representing a node and its distance from the target
+    // Class representing a node and its distance from the target
     private static class NodeDistance {
         Node node;
         double distance;
@@ -117,16 +124,14 @@ public class KdTree {
     }
 }
 
-// Class for quick selection algorithm used in KdTree
+// Class for quick select algorithm
 class QuickSelect {
     private static final Random random = new Random();
 
-    // Method to select the nth element in a list using a comparator
     public static <T> T select(List<T> list, int n, Comparator<? super T> cmp) {
         return select(list, 0, list.size() - 1, n, cmp);
     }
 
-    // Helper method for select
     public static <T> T select(List<T> list, int left, int right, int n, Comparator<? super T> cmp) {
         for (; ; ) {
             if (left == right)
@@ -142,7 +147,6 @@ class QuickSelect {
         }
     }
 
-    // Method to partition the list around a pivot
     private static <T> int partition(List<T> list, int left, int right, int pivot, Comparator<? super T> cmp) {
         T pivotValue = list.get(pivot);
         swap(list, pivot, right);
@@ -157,17 +161,13 @@ class QuickSelect {
         return store;
     }
 
-    // Method to partition the list around a pivot
     private static <T> void swap(List<T> list, int i, int j) {
         T value = list.get(i);
         list.set(i, list.get(j));
         list.set(j, value);
     }
 
-    // Method to partition the list around a pivot
     private static int pivotIndex(int left, int right) {
         return left + random.nextInt(right - left + 1);
     }
 }
-
-//

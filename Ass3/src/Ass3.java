@@ -14,37 +14,36 @@ public class Ass3 {
         System.out.println("\t\t\t\tAssignment 3: Breast Cancer Diagnosis Research");
         System.out.println("*************************************************************************************");
 
-
-        Reader reader = new Reader();  // Creating a Reader object to read the data file
+        // Creates a Reader object to read the CSV file of the complete data set
+        Reader reader = new Reader();
         Map<Integer, Patient> dataMap = reader.readFile();
 
-        // Storing the IDs and shuffling them
+        // Storing the IDs in an array and shuffling them
         List<Integer> IDs = new ArrayList<>(dataMap.keySet());
         Collections.shuffle(IDs);
 
-        // Creating Array of training records
+        // Creating an array containing the training records sample size
         int[] training_count = {100, 200, 300, 400, 500, 568, 600};
 
         int choice = 1;
 
-        // Loop to alternate between KdTree and BallTree algorithms
+        // Displaying KdTree and BallTree results
         while (choice <= 2) {
 
             switch (choice) {
-                case 1: // KdTree Output
+                case 1:
                     System.out.println("-------------------------------------------------------------------------------------");
-                    System.out.println("\t\t\t\t\t\t\tKdTree Algorithm");
+                    System.out.println("\t\t\t\t\t\t\t\tKdTree");
                     System.out.println("-------------------------------------------------------------------------------------");
                     break;
-                case 2: // BallTree Output
+                case 2:
                     System.out.println();
                     System.out.println("-------------------------------------------------------------------------------------");
-                    System.out.println("\t\t\t\t\t\t\tBallTree Algorithm");
+                    System.out.println("\t\t\t\t\t\t\t\tBallTree");
                     System.out.println("-------------------------------------------------------------------------------------");
                     break;
             }
 
-            // Loop through different training records
             for (int size_N : training_count) {
 
                 int test_count = size_N / 4;
@@ -59,7 +58,7 @@ public class Ass3 {
 
                 System.out.println("\nFor a training sample of N = " + size_N + " and a testing sample of T = " + test_count + " here are the results:");
 
-                // Splitting the data into training and testing sets
+                // Splitting dataMap into training and testing records
                 Map<Integer, double[]> trainingRecords = new LinkedHashMap<>();
                 Map<Integer, double[]> testingRecords = new LinkedHashMap<>();
 
@@ -75,14 +74,14 @@ public class Ass3 {
                     testingRecords.put(key, record.getAttributes());
                 }
 
-                // Building the k-d tree with training records
+                // Building the KdTree using the training records
                 KdTree kdTree = new KdTree(10, trainingRecords);
 
-                // Building the ball tree with training records
+                // Building the BallTree using the training records
                 List<double[]> trainingPoints = new ArrayList<>(trainingRecords.values());
                 BallTree.Node rootBallTree = BallTree.constructBallTree(trainingPoints);
 
-                // K-NN analysis on testing records
+                // K-NN analysis of the testing records using different kValues
                 int[] kValues = {1, 5, 7};
 
                 switch (choice) {
@@ -149,7 +148,7 @@ public class Ass3 {
         }
     }
 
-    // Class to measure running time
+    // Class to create stopwatches
     public static class Stopwatch {
         private final long start;
 
@@ -193,4 +192,3 @@ public class Ass3 {
         return Collections.max(voteCount.entrySet(), Map.Entry.comparingByValue()).getKey();
     }
 }
-//

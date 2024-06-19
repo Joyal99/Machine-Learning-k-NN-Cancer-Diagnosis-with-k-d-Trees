@@ -1,19 +1,27 @@
+// References
+//micycle1, "KMeansCluster," [Online]. Available: https://github.com/micycle1/KMeansCluster. [Accessed 12 June 2024].
+//Wikipedia , "Ball tree," [Online]. Available: https://en.wikipedia.org/wiki/Ball_tree. [Accessed 12 June 2024].
+/*
+GeeksforGeeks, "K-Nearest Neighbor(KNN) Algorithm," 25 January 2024. [Online].
+Available: https://www.geeksforgeeks.org/k-nearest-neighbours/. [Accessed 10 June 2024].
+ */
+
 import java.util.*;
 
 public class BallTree {
 
-    // Inner class representing a node in the Ball Tree
+    // Class representing a node in the Ball Tree
     public static class Node {
-        double[] point; // The data point stored in this node
-        Node child1, child2; // Child Nodes
-        double radius; // radius defining the ball
+        double[] point;
+        Node child1, child2;
+        double radius;
 
-        //Constructor for the leaf node
+        // Constructor for the leaf node
         Node(double[] point) {
             this.point = point;
         }
 
-        //Constructor for the internal node
+        // Constructor for the internal node
         Node(double[] point, Node child1, Node child2, double radius) {
             this.point = point;
             this.child1 = child1;
@@ -22,10 +30,10 @@ public class BallTree {
         }
     }
 
-    // Inner class to represent a point and its distance from a target point
+    // Class that represents a point and its distance from a target point
     static class PointDistance {
-        double[] point; // defining the data point
-        double distance; // Distance from the target point
+        double[] point;
+        double distance;
 
         PointDistance(double[] point, double distance) {
             this.point = point;
@@ -33,14 +41,14 @@ public class BallTree {
         }
     }
 
-    //Method constructing the Ball Tree from a list of data points
+    // Method constructing the Ball Tree
     public static Node constructBallTree(List<double[]> dataPoints) {
         if (dataPoints.isEmpty()) {
-            return null; // Return null if dataPoints is empty
+            return null;
         }
 
         if (dataPoints.size() == 1) {
-            return new Node(dataPoints.get(0)); // Return a leaf node if only one point exists
+            return new Node(dataPoints.get(0));
         }
 
         int dimension = dataPoints.get(0).length; // defining dimension
@@ -49,7 +57,6 @@ public class BallTree {
         int medianIndex = dataPoints.size() / 2;
         double[] pivot = dataPoints.get(medianIndex); // defining pivot position
 
-        // data points seperated by two lists
         List<double[]> leftSet = dataPoints.subList(0, medianIndex);
         List<double[]> rightSet = dataPoints.subList(medianIndex + 1, dataPoints.size());
 
@@ -67,7 +74,7 @@ public class BallTree {
         return new Node(pivot, child1, child2, radius);
     }
 
-    // Method to find the dimension with the greatest spread
+    // Method that finds the dimension with the greatest spread
     private static int findGreatestSpreadDimension(List<double[]> dataPoints, int dimension) {
         double[] min = new double[dimension];
         double[] max = new double[dimension];
@@ -98,7 +105,7 @@ public class BallTree {
         return greatestSpreadDimension;
     }
 
-    // Method to find the dimension with the greatest spread
+    // Method that finds the Euclidean distance
     private static double euclideanDistance(double[] p1, double[] p2) {
         double sum = 0;
         for (int i = 0; i < p1.length; i++) {
@@ -108,7 +115,7 @@ public class BallTree {
         return Math.sqrt(sum);
     }
 
-    // Method to find the k nearest neighbors of a target point using a Ball Tree
+    // Method that finds the k nearest neighbors of a target point
     public static List<double[]> kNearestNeighbors(Node root, double[] target, int k) {
         PriorityQueue<PointDistance> pq = new PriorityQueue<>(Comparator.comparingDouble(a -> -a.distance));
         kNearestNeighbors(root, target, k, pq);
@@ -120,7 +127,7 @@ public class BallTree {
         return result;
     }
 
-    // Helper method for kNearestNeighbors
+    // Method for kNearestNeighbors
     private static void kNearestNeighbors(Node node, double[] target, int k, PriorityQueue<PointDistance> pq) {
         if (node == null) {
             return;
@@ -145,4 +152,3 @@ public class BallTree {
         }
     }
 }
-//
